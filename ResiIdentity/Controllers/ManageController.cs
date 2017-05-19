@@ -218,7 +218,7 @@ namespace ResiIdentity.Controllers
         {
             return View();
         }
-        // NOTE: This call has been modified to call static function in SandataUserContest to update SandaAccess member and change passord in LDAP *** SLP
+        // NOTE: This call has been modified to call static function in OpenIDMUserContest to update SandaAccess member and change passord in LDAP *** SLP
         // Notice the ManageMessageId.ContextMessage referenced in  public enum ManageMessageId to get message to display.
         // POST: /Manage/ChangePassword
         [HttpPost]
@@ -237,7 +237,7 @@ namespace ResiIdentity.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                // NOTE: here we update the password for real in OpenIDM and change SandataAccess flag **********************
+                // NOTE: here we update the password for real in OpenIDM and change OpenIDMAccess flag **********************
                 var responseMessage = await OpenIDMUserContext.ChangePassword(User.Identity.Name, model.NewPassword);
                 if (responseMessage)
                 {

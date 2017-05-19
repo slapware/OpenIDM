@@ -68,22 +68,22 @@ namespace ResiIdentity.Models
         public static string UserInfoEndpoint { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata supplied agent ID
+        ///     Gets or sets the OpenIDM supplied agent ID
         /// </summary>
         public static string AgentId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata Last Login time
+        ///     Gets or sets the OpenIDM Last Login time
         /// </summary>
         public static string LastLogin { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata supplied user ID
+        ///     Gets or sets the OpenIDM supplied user ID
         /// </summary>
         public static string UserId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata supplied user ID
+        ///     Gets or sets the OpenIDM supplied user ID
         /// </summary>
         public static string UserSecret { get; set; }
 
@@ -118,17 +118,17 @@ namespace ResiIdentity.Models
         public static string RawPersona { get; set; }
 
         /// <summary>
-        ///     Gets or sets the SandataGUID
+        ///     Gets or sets the OpenIDMGUID
         /// </summary>
-        public static string SandataGuid { get; set; }
+        public static string OpenIDMGuid { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata supplied agent Secret
+        ///     Gets or sets the OpenIDM supplied agent Secret
         /// </summary>
         public static string AgentSecret { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Sandata userinfo
+        ///     Gets or sets the OpenIDM userinfo
         /// </summary>
         public static string UserJson { get; set; }
 
@@ -140,7 +140,7 @@ namespace ResiIdentity.Models
         /// <summary>
         ///     Gets or sets the Auth Realm
         /// </summary>
-        public static string SandataAccess { get; set; }
+        public static string OpenIDMAccess { get; set; }
 
         /// <summary>
         ///     Get the user information from openam for claims and groups.
@@ -152,7 +152,7 @@ namespace ResiIdentity.Models
         {
             UserId = sanuser;
             UserSecret = sanpass;
-            var scope = "SandataGUID isMemberOf email o ou cn lastLoginTime SandataAccess Persona";
+            var scope = "OpenIDMGUID isMemberOf email o ou cn lastLoginTime OpenIDMAccess Persona";
 
             var requestBody = "grant_type=password&username=" + UserId + "&password=" + UserSecret + "&scope="
                               + Uri.EscapeDataString(scope);
@@ -185,14 +185,14 @@ namespace ResiIdentity.Models
                 var userinfo2 = infoResponce.Result.Content.ReadAsStringAsync();
                 var sinfo = userinfo2.Result;
                 var sanInfo = JObject.Parse(sinfo);
-                SandataGuid = sanInfo.TryGetValue("SandataGUID", out value) ? value.ToString() : null;
+                OpenIDMGuid = sanInfo.TryGetValue("OpenIDMGUID", out value) ? value.ToString() : null;
                 OrganUnit = sanInfo.TryGetValue("ou", out value) ? value.ToString() : null;
                 Organization = sanInfo.TryGetValue("o", out value) ? value.ToString() : null;
                 CommonName = sanInfo.TryGetValue("cn", out value) ? value.ToString() : null;
                 RawGroups = sanInfo.TryGetValue("isMemberOf", out value) ? value.ToString() : null;
                 RawPersona = sanInfo.TryGetValue("Persona", out value) ? value.ToString() : null;
                 LastLogin = sanInfo.TryGetValue("lastLoginTime", out value) ? value.ToString() : null;
-                SandataAccess = sanInfo.TryGetValue("SandataAccess", out value) ? value.ToString() : null;
+                OpenIDMAccess = sanInfo.TryGetValue("OpenIDMAccess", out value) ? value.ToString() : null;
             }
             return true;
         }
@@ -436,11 +436,11 @@ namespace ResiIdentity.Models
 
             string content = await response.Content.ReadAsStringAsync();
 
-            // *************** Change SandataAccess to yes to flag as done with password change *******************.
+            // *************** Change OpenIDMAccess to yes to flag as done with password change *******************.
             Dictionary<string, string> sanAccess = new Dictionary<string, string>
             {
                { "operation", "replace" },
-               { "field", "/SandataAccess" },
+               { "field", "/OpenIDMAccess" },
                { "value", "YES" }
             };
             string ascjson = JsonConvert.SerializeObject(sanAccess, Formatting.Indented);
@@ -517,7 +517,7 @@ namespace ResiIdentity.Models
             var httpClient = new HttpClient();
             Dictionary<string, string> sanNotice = new Dictionary<string, string>
             {
-               { "from", "no-reply@sandata.com" },
+               { "from", "no-reply@OpenIDM.com" },
                { "to", sanuser },
                { "subject", "Password Reset" },
                { "body", message }

@@ -93,8 +93,8 @@ namespace ResiIdentity.Controllers
                 this.ModelState.AddModelError("", OpenIDMUserContext.ViewMessage);
                 return this.View(model);
             }
-            // NOTE: Check is is valid sandata registered here, if not just say good bye
-            if (OpenIDMUserContext.SandataGuid == null)
+            // NOTE: Check is is valid OpenIDM registered here, if not just say good bye
+            if (OpenIDMUserContext.OpenIDMGuid == null)
             {
                 this.ModelState.AddModelError("", "Invalid login attempt.");
                 return this.View(model);
@@ -108,7 +108,7 @@ namespace ResiIdentity.Controllers
             if (existingIdentity == null)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                user.SandataGUID = OpenIDMUserContext.SandataGuid;
+                user.OpenIDMGUID = OpenIDMUserContext.OpenIDMGuid;
                 user.GivenName = OpenIDMUserContext.CommonName;
                 user.RefreshToken = OpenIDMUserContext.RefreshToken;
                 user.Org = OpenIDMUserContext.Organization;
@@ -139,7 +139,7 @@ namespace ResiIdentity.Controllers
             }
             else
             {
-                existingIdentity.SandataGUID = OpenIDMUserContext.SandataGuid;
+                existingIdentity.OpenIDMGUID = OpenIDMUserContext.OpenIDMGuid;
                 existingIdentity.GivenName = OpenIDMUserContext.CommonName;
                 existingIdentity.RefreshToken = OpenIDMUserContext.RefreshToken;
                 existingIdentity.AccessToken = OpenIDMUserContext.AccessToken;
@@ -169,7 +169,7 @@ namespace ResiIdentity.Controllers
                     await this.UserManager.AddToRoleAsync(user.Id, entry);
                 }
             }
-            if (OpenIDMUserContext.SandataAccess == "")
+            if (OpenIDMUserContext.OpenIDMAccess == "")
             {
                 return RedirectToAction("ChangePassword", "Manage");
             }

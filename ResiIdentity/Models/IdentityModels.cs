@@ -11,7 +11,7 @@ namespace ResiIdentity.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser, StackRedis.AspNet.Identity.IIdentityUser 
     {
-        public string SandataGUID { get; set; }
+        public string OpenIDMGUID { get; set; }
         public string GivenName { get; set; }
         public string RefreshToken { get; set; }
         public string AccessToken { get; set; }
@@ -27,7 +27,7 @@ namespace ResiIdentity.Models
             var user = this;
             if (!String.IsNullOrEmpty(OpenIDMUserContext.AccessToken))
             {
-                userIdentity.AddClaim(new Claim("SandataGUID", OpenIDMUserContext.SandataGuid));
+                userIdentity.AddClaim(new Claim("OpenIDMGUID", OpenIDMUserContext.OpenIDMGuid));
                 if (string.IsNullOrEmpty(OpenIDMUserContext.CommonName) == false)
                 {
                     userIdentity.AddClaim(new Claim("FullName", OpenIDMUserContext.CommonName));
