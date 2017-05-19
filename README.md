@@ -1,4 +1,4 @@
-OPENIDM ASP.NET identity and Redis.
+C# OPENIDM ASP.NET identity and Redis.
 ===================================
 
 An example of how to use OpenIDM with a rest interaface for ASP.NET Identity.
